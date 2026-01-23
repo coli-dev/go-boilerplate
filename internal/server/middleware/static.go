@@ -28,8 +28,16 @@ func static(urlPrefix string, fileSystem http.FileSystem) gin.HandlerFunc {
 			c.Next()
 			return
 		}
-		if _, err := fileSystem.Open(c.Request.URL.Path); err == nil {
+		if f, err := fileSystem.Open(c.Request.URL.Path); err == nil {
+			f.Close()
 			c.Header("Cache-Control", "public, max-age=31536000, immutable")
+			fileserver.ServeHTTP(c.Writer, c.Request)
+			c.Abort()
+			return
+		}
+		if f, err := fileSystem.Open("index.html"); err == nil {
+			f.Close()
+			c.Request.URL.Path = "/"
 			fileserver.ServeHTTP(c.Writer, c.Request)
 			c.Abort()
 		}

@@ -39,7 +39,7 @@ var startCmd = &cobra.Command{
 
 		r.Use(middleware.Cors())
 		r.Use(middleware.Logger())
-		r.Use(middleware.StaticLocal("/", "static"))
+		r.Use(middleware.StaticLocal("/", "web/dist"))
 
 		router.RegisterAll(r)
 
