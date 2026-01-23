@@ -5,34 +5,45 @@ A Go web service boilerplate with Gin, Cobra CLI, and GORM.
 ## Requirements
 
 - Go 1.24+
+- Node.js 20+
 - [Air](https://github.com/cosmtrek/air) (for hot reload during development)
 
-## Development
-
-### Install Air
+## Quick Start
 
 ```bash
 go install github.com/cosmtrek/air@latest
+cd web && npm install && cd ..
+make dev
 ```
 
-### Run with Hot Reload
+Open http://localhost:5173 - both frontend and backend hot reload on code changes.
+
+## Development
+
+### Full Stack Dev (Recommended)
+
+```bash
+make dev
+```
+
+Runs both backend (Air) and frontend (Vite) with hot reload. Frontend at `http://localhost:5173` proxies API calls to backend at `http://localhost:8080`.
+
+### Backend Only
 
 ```bash
 air
 ```
 
-The server will start at `http://127.0.0.1:8080` and automatically reload when you modify Go files.
-
-### Run without Hot Reload
+### Frontend Only
 
 ```bash
-go run . start
+cd web && npm run dev
 ```
 
 ### Build
 
 ```bash
-./scripts/build.sh
+make build
 ```
 
 ## Project Structure
