@@ -6,7 +6,6 @@ import (
 
 	"github.com/coli-dev/go-boilerplate/internal/conf"
 	"github.com/coli-dev/go-boilerplate/internal/db"
-	"github.com/coli-dev/go-boilerplate/internal/op"
 	_ "github.com/coli-dev/go-boilerplate/internal/server/handlers"
 	"github.com/coli-dev/go-boilerplate/internal/server/middleware"
 	"github.com/coli-dev/go-boilerplate/internal/server/router"
@@ -56,11 +55,6 @@ var startCmd = &cobra.Command{
 			return
 		}
 		sd.Register(db.Close)
-
-		if err := op.UserInit(); err != nil {
-			log.Errorf("user init error: %v", err)
-			return
-		}
 	},
 }
 

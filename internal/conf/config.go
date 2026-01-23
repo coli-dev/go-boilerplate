@@ -22,10 +22,15 @@ type Database struct {
 	Path string `json:"path"`
 }
 
+type JWT struct {
+	Secret string `json:"secret"`
+}
+
 type Config struct {
 	Server   Server
 	Log      Log
 	Database Database
+	JWT      JWT
 }
 
 var AppConfig Config
@@ -72,4 +77,5 @@ func setDefaults() {
 	viper.SetDefault("database.type", "sqlite")
 	viper.SetDefault("database.path", "data/data.db")
 	viper.SetDefault("logging.level", "info")
+	viper.SetDefault("jwt.secret", "change-this-secret-in-production")
 }

@@ -1,46 +1,34 @@
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+import LandingPage from "@/pages/LandingPage"
+import LoginPage from "@/pages/LoginPage"
+import RegisterPage from "@/pages/RegisterPage"
+import DashboardPage from "@/pages/DashboardPage"
+
+function ProtectedRoute({ children }: { children: React.ReactNode }) {
+  const token = localStorage.getItem("token")
+  if (!token) {
+    return <Navigate to="/login" replace />
+  }
+  return <>{children}</>
+}
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle>React + shadcn/ui</CardTitle>
-          <CardDescription>Go Boilerplate Client</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex gap-2">
-            <Input placeholder="Enter something..." />
-            <Button>Submit</Button>
-          </div>
-          <div className="flex items-center gap-4">
-            <Button variant="outline" onClick={() => setCount((c) => c - 1)}>
-              -
-            </Button>
-            <span className="text-lg font-medium">Count: {count}</span>
-            <Button variant="outline" onClick={() => setCount((c) => c + 1)}>
-              +
-            </Button>
-          </div>
-          <div className="flex gap-2">
-            <Button variant="secondary">Secondary</Button>
-            <Button variant="destructive">Destructive</Button>
-            <Button variant="ghost">Ghost</Button>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
