@@ -5,7 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Build & Run Commands
 
 ### Backend (Go)
-- **Hot reload**: `air` (requires `go install github.com/cosmtrek/air@latest`)
+- **Hot reload**: `air` (requires `go install github.com/air-verse/air@latest`)
 - **Run directly**: `go run . start`
 - **Build**: `./scripts/build.sh` (supports `build <os> <arch>` and `release` targets)
 

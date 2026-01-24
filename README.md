@@ -6,12 +6,12 @@ A Go web service boilerplate with Gin, Cobra CLI, and GORM.
 
 - Go 1.24+
 - Node.js 20+
-- [Air](https://github.com/cosmtrek/air) (for hot reload during development)
+- [Air](https://github.com/air-verse/air) (for hot reload during development)
 
 ## Quick Start
 
 ```bash
-go install github.com/cosmtrek/air@latest
+go install github.com/air-verse/air@latest
 cd web && npm install && cd ..
 make dev
 ```
