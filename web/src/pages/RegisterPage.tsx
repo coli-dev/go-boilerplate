@@ -53,7 +53,9 @@ export default function RegisterPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && <p className="text-sm text-red-500">{error}</p>}
             <div className="space-y-2">
-              <label htmlFor="username" className="text-sm font-medium">Username</label>
+              <label htmlFor="username" className="text-sm font-medium">
+                Username
+              </label>
               <Input
                 id="username"
                 type="text"
@@ -64,7 +66,9 @@ export default function RegisterPage() {
               />
             </div>
             <div className="space-y-2">
-              <label htmlFor="email" className="text-sm font-medium">Email</label>
+              <label htmlFor="email" className="text-sm font-medium">
+                Email
+              </label>
               <Input
                 id="email"
                 type="email"
@@ -75,7 +79,9 @@ export default function RegisterPage() {
               />
             </div>
             <div className="space-y-2">
-              <label htmlFor="password" className="text-sm font-medium">Password</label>
+              <label htmlFor="password" className="text-sm font-medium">
+                Password
+              </label>
               <Input
                 id="password"
                 type="password"
@@ -90,7 +96,9 @@ export default function RegisterPage() {
             </Button>
             <p className="text-sm text-center text-muted-foreground">
               Already have an account?{" "}
-              <Link to="/login" className="text-primary underline">Login</Link>
+              <Link to="/login" className="text-primary underline">
+                Login
+              </Link>
             </p>
           </form>
         </CardContent>

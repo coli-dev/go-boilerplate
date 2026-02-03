@@ -48,13 +48,17 @@ export default function LoginPage() {
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Login</CardTitle>
-          <CardDescription>Enter your credentials to access your account</CardDescription>
+          <CardDescription>
+            Enter your credentials to access your account
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && <p className="text-sm text-red-500">{error}</p>}
             <div className="space-y-2">
-              <label htmlFor="email" className="text-sm font-medium">Email</label>
+              <label htmlFor="email" className="text-sm font-medium">
+                Email
+              </label>
               <Input
                 id="email"
                 type="email"
@@ -65,7 +69,9 @@ export default function LoginPage() {
               />
             </div>
             <div className="space-y-2">
-              <label htmlFor="password" className="text-sm font-medium">Password</label>
+              <label htmlFor="password" className="text-sm font-medium">
+                Password
+              </label>
               <Input
                 id="password"
                 type="password"
@@ -80,7 +86,9 @@ export default function LoginPage() {
             </Button>
             <p className="text-sm text-center text-muted-foreground">
               Don't have an account?{" "}
-              <Link to="/register" className="text-primary underline">Register</Link>
+              <Link to="/register" className="text-primary underline">
+                Register
+              </Link>
             </p>
           </form>
         </CardContent>
