@@ -4,6 +4,6 @@ var (
 	Version   = "dev"
 	Commit    = "unknown"
 	BuildTime = "unknown"
-	Author    = "bestrui"
+	Author    = "coli-dev"
 	Repo      = "https://github.com/coli-dev/go-boilerplate"
 )
