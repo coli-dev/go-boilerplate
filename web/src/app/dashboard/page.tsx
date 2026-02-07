@@ -1,4 +1,7 @@
-import { useNavigate } from "react-router-dom"
+"use client"
+
+import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -9,13 +12,25 @@ import {
 } from "@/components/ui/card"
 
 export default function DashboardPage() {
-  const navigate = useNavigate()
+  const router = useRouter()
+  const [authorized, setAuthorized] = useState(false)
+
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    if (!token) {
+      router.replace("/login")
+    } else {
+      setAuthorized(true)
+    }
+  }, [router])
 
   const handleLogout = () => {
     localStorage.removeItem("token")
     localStorage.removeItem("expire_at")
-    navigate("/")
+    router.push("/")
   }
+
+  if (!authorized) return null
 
   return (
     <div className="min-h-screen bg-background">

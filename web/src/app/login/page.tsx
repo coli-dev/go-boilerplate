@@ -1,5 +1,8 @@
+"use client"
+
 import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -11,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input"
 
 export default function LoginPage() {
-  const navigate = useNavigate()
+  const router = useRouter()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
@@ -35,7 +38,7 @@ export default function LoginPage() {
       }
       localStorage.setItem("token", data.data.token)
       localStorage.setItem("expire_at", data.data.expire_at)
-      navigate("/dashboard")
+      router.push("/dashboard")
     } catch {
       setError("Network error")
     } finally {
@@ -85,8 +88,8 @@ export default function LoginPage() {
               {loading ? "Logging in..." : "Login"}
             </Button>
             <p className="text-sm text-center text-muted-foreground">
-              Don't have an account?{" "}
-              <Link to="/register" className="text-primary underline">
+              Don&apos;t have an account?{" "}
+              <Link href="/register" className="text-primary underline">
                 Register
               </Link>
             </p>

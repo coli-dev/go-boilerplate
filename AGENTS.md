@@ -1,48 +1,127 @@
-# CLAUDE.md
+# AGENTS.md - Go Boilerplate
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Full-stack boilerplate: Go backend (Gin + GORM + Cobra) + Next.js frontend.
 
-## Build & Run Commands
+---
 
-### Backend (Go)
-- **Hot reload**: `air` (requires `go install github.com/air-verse/air@latest`)
-- **Run directly**: `go run . start`
-- **Build**: `./scripts/build.sh` (supports `build <os> <arch>` and `release` targets)
+## STRUCTURE
 
-### Frontend (web/)
-- **Dev server**: `npm run dev`
-- **Build**: `npm run build`
-- **Lint**: `npm run lint`
-- **Format**: `npm run format`
-
-## Architecture
-
-### Backend
-The backend is a Gin-based HTTP server with Cobra CLI, structured as:
-
-- `cmd/` - CLI commands (start, version)
-- `internal/conf/` - Viper-based config, creates `data/config.json` on first run
-- `internal/db/` - GORM + SQLite database initialization
-- `internal/model/` - Data models with request/response DTOs
-- `internal/op/` - Business logic operations
-- `internal/server/` - HTTP layer:
-  - `auth/` - JWT generation and verification
-  - `handlers/` - Route handlers using auto-registration via `init()`
-  - `middleware/` - CORS, logger, auth, static file serving
-  - `router/` - Route registry pattern with `NewGroupRouter` and `NewRoute`
-  - `resp/` - Standardized response helpers (`resp.Success`, `resp.Error`)
-
-### Frontend
-React + TypeScript + Vite SPA in `web/`. Uses Tailwind CSS and Biome for linting. Built assets in `web/dist` are served by the backend with SPA fallback.
-
-## Key Patterns
-
-**Route registration**: Handlers register routes in `init()` using the router registry:
-```go
-router.NewGroupRouter("/api/v1/user").
-    AddRoute(router.NewRoute("/login", http.MethodPost).Handle(login))
+```
+.
+├── cmd/                    # Cobra CLI commands
+├── internal/               # Backend internals
+│   ├── conf/               # Viper config (auto-creates data/config.json)
+│   ├── db/                 # GORM + SQLite initialization
+│   ├── model/              # Data models + request/response DTOs
+│   ├── op/                 # Business operations
+│   ├── server/             # HTTP layer (see internal/server/AGENTS.md)
+│   │   ├── auth/           # JWT generation/verification
+│   │   ├── handlers/       # Route handlers (auto-registration)
+│   │   ├── middleware/     # CORS, auth, logger, static
+│   │   ├── resp/           # Standardized JSON responses
+│   │   └── router/         # Registry pattern
+│   └── utils/              # shutdown, log
+├── scripts/                # Build & Docker scripts
+├── static/                 # Static files
+└── web/                    # Next.js frontend (see web/AGENTS.md)
+    ├── src/app/            # App Router pages
+    └── src/components/     # shadcn/ui components
 ```
 
-**Auth middleware**: Extracts JWT from `Authorization` header, stores user ID in Gin context.
+---
 
-**Config**: Viper with env override prefix `EXAMPLE_`. Config file at `data/config.json`.
+## COMMANDS
+
+### Full Stack Development
+```bash
+make dev          # Backend + frontend hot reload
+```
+
+### Backend Only
+```bash
+air               # Hot reload with Air
+go run . start    # Direct run
+./scripts/build.sh [os] [arch]   # Cross-compile
+```
+
+### Frontend Only
+```bash
+cd web
+npm run dev       # Next.js + Turbopack
+npm run build     # Production build → dist/
+npm run lint      # Biome check
+npm run format    # Biome format
+```
+
+---
+
+## CONVENTIONS
+
+### Backend
+
+**Route Registration** - Auto-register via `init()`:
+```go
+func init() {
+    router.NewGroupRouter("/api/v1/resource").
+        AddRoute(router.NewRoute("/path", http.MethodPost).Handle(handler))
+}
+```
+
+**Models** - Separate struct for DB + DTOs:
+```go
+type User struct { /* GORM fields */ }
+type UserLogin struct { /* JSON tags */ }
+```
+
+**Operations** - Business logic in `op/` package:
+```go
+var ErrUserNotFound = errors.New("user not found")
+func UserGetByID(id uint) (*model.User, error)
+```
+
+**Responses** - Standardized helpers:
+```go
+resp.Success(c, data)     // {"code":200,"message":"success","data":...}
+resp.Error(c, 400, msg)   // {"code":400,"message":"..."}
+```
+
+### Frontend
+
+**Components** - shadcn/ui pattern with `cn()` utility
+**API Calls** - Direct fetch to `/api/v1/*`, store token in localStorage
+**Linting** - Biome (replaces ESLint + Prettier)
+
+---
+
+## CONFIGURATION
+
+Viper-based with env override prefix `GOBOILERPLATE_`:
+- `GOBOILERPLATE_SERVER_PORT=3000`
+- `GOBOILERPLATE_DATABASE_PATH=./data.db`
+
+Config file auto-created at `data/config.json` on first run.
+
+---
+
+## WHERE TO LOOK
+
+| Task | Location |
+|------|----------|
+| Add API endpoint | `internal/server/handlers/*.go` |
+| Change JWT logic | `internal/server/auth/` |
+| Add middleware | `internal/server/middleware/` |
+| Modify response format | `internal/server/resp/` |
+| Add DB model | `internal/model/` |
+| Business logic | `internal/op/` |
+| Frontend pages | `web/src/app/` |
+| UI components | `web/src/components/ui/` |
+
+---
+
+## NOTES
+
+- Backend serves `web/dist/` with SPA fallback for production
+- Static files in `static/` served at root
+- Frontend proxies API calls to backend in dev mode
+- JWT expires: default 15min, custom via `expire` field, `-1` = 30 days
+- Environment variable `GOBOILERPLATE_DEBUG=true` enables debug mode

@@ -1,5 +1,8 @@
+"use client"
+
 import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -11,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input"
 
 export default function RegisterPage() {
-  const navigate = useNavigate()
+  const router = useRouter()
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -34,7 +37,7 @@ export default function RegisterPage() {
         setError(data.message || "Registration failed")
         return
       }
-      navigate("/login")
+      router.push("/login")
     } catch {
       setError("Network error")
     } finally {
@@ -96,7 +99,7 @@ export default function RegisterPage() {
             </Button>
             <p className="text-sm text-center text-muted-foreground">
               Already have an account?{" "}
-              <Link to="/login" className="text-primary underline">
+              <Link href="/login" className="text-primary underline">
                 Login
               </Link>
             </p>
